@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register - RemAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>📝 Create Your RemAI Account</h1>
+
+  <div id="registerBox">
+    <input type="text" id="regName" placeholder="Full Name" required />
+    <input type="email" id="regEmail" placeholder="Email" required />
+    <input type="password" id="regPass" placeholder="Password" required />
+    <button onclick="registerUser()">🔐 Register</button>
+    <p id="regMsg"></p>
+
+    <p style="margin-top: 1rem;">
+      Already have an account? <a href="index.html">Login here</a>
+    </p>
+  </div>
+
+  <script>
+    async function registerUser() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPass').value.trim();
+      const msg = document.getElementById('regMsg');
+
+      if (!name || !email || !password) {
+        msg.textContent = "⚠️ All fields are required.";
+        msg.style.color = "orange";
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          msg.textContent = data.message;
+          msg.style.color = "green";
+          document.getElementById('regName').value = "";
+          document.getElementById('regEmail').value = "";
+          document.getElementById('regPass').value = "";
+        } else {
+          msg.textContent = data.error || "❌ Registration failed.";
+          msg.style.color = "red";
+        }
+      } catch (err) {
+        msg.textContent = "❌ Network error.";
+        msg.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>

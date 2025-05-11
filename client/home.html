@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to RemAI Quotes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .hero {
+      padding: 5rem 1rem 3rem;
+      text-align: center;
+      background: linear-gradient(to bottom, #121212, #1e1e1e);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ddd;
+    }
+
+    .cta-buttons {
+      margin-top: 2rem;
+    }
+
+    .cta-buttons a {
+      text-decoration: none;
+      margin: 0 10px;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      background-color: #ff9800;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .cta-buttons a:hover {
+      background-color: #ffa726;
+    }
+
+    .features {
+      background: #fff;
+      color: #222;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .features h2 {
+      margin-bottom: 2rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .feature {
+      padding: 1.5rem;
+      background: #f5f5f5;
+      border-radius: 8px;
+      transition: 0.3s;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .feature.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      background: #121212;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>🧠 RemAI Quotes</h1>
+    <p>AI-powered inspiration for developers, designers & dreamers.</p>
+    <div class="cta-buttons">
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+  </div>
+
+  <section class="features">
+    <h2>✨ What You Can Do</h2>
+    <div class="feature-grid">
+      <div class="feature">🚀 Generate motivational tech quotes with AI</div>
+      <div class="feature">💾 Save your favorites & view quote stats</div>
+      <div class="feature">🌐 Switch languages & export to CSV/image</div>
+      <div class="feature">📊 Admin dashboard with user/quote analytics</div>
+      <div class="feature">🔐 Secure login & personalized content</div>
+      <div class="feature">🧠 Smart prompts & trending topics</div>
+    </div>
+  </section>
+
+  <footer>
+    © 2024 RemAI | Built with love & Open Source
+  </footer>
+
+  <script>
+    // Fade-in animation for features
+    const features = document.querySelectorAll('.feature');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    features.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

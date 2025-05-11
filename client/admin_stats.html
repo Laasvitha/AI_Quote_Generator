@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Stats Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .stat-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat {
+      background: #ff9800;
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      font-size: 1.5rem;
+      min-width: 180px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    canvas {
+      max-width: 800px;
+      margin: 30px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 Admin Stats Dashboard</h1>
+
+  <div id="statsSection" style="display: none;">
+    <div class="stat-cards">
+      <div class="stat">👤 Users: <span id="userCount">-</span></div>
+      <div class="stat">🧠 Quotes: <span id="quoteCount">-</span></div>
+    </div>
+
+    <canvas id="quotesChart"></canvas>
+    <canvas id="usersChart"></canvas>
+  </div>
+
+  <script>
+    const ADMIN_TOKEN = "a@4Tk%XzL#91PbUrGw&VcNHqE$mdz83nF5KyJAZM";
+
+    async function loadStats() {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/stats", {
+          headers: { "x-admin-token": ADMIN_TOKEN }
+        });
+
+        const data = await res.json();
+        if (!res.ok) return alert(data.error || "Unauthorized");
+
+        document.getElementById("statsSection").style.display = "block";
+        document.getElementById("userCount").innerText = data.userCount;
+        document.getElementById("quoteCount").innerText = data.quoteCount;
+
+        renderLineChart("quotesChart", "Quotes per Day", data.quotesByDay);
+        renderLineChart("usersChart", "Users per Day", data.usersByDay);
+      } catch (err) {
+        alert("❌ Failed to load stats.");
+      }
+    }
+
+    function renderLineChart(id, label, dataArr) {
+      const labels = dataArr.map(d => d._id);
+      const values = dataArr.map(d => d.count);
+
+      new Chart(document.getElementById(id).getContext('2d'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label,
+            data: values,
+            fill: true,
+            tension: 0.3,
+            backgroundColor: 'rgba(255,152,0,0.2)',
+            borderColor: '#ff9800'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true },
+            title: { display: true, text: label }
+          }
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadStats);
+  </script>
+</body>
+</html>

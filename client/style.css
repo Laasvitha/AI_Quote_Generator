@@ -1,0 +1,198 @@
+/* ===== Global Styles ===== */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #121212;
+  color: #ffffff;
+  text-align: center;
+  padding: 2rem;
+  margin: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.light {
+  background: #f5f5f5;
+  color: #222222;
+}
+
+h1, h2, h3 {
+  color: #ff9800;
+  margin-bottom: 20px;
+}
+
+a {
+  color: #4fc3f7;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Input Fields ===== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  padding: 12px;
+  margin: 8px auto;
+  width: 90%;
+  max-width: 400px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  display: block;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+/* ===== Buttons ===== */
+button {
+  margin: 6px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #ff9800;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #ffa726;
+}
+
+/* ===== Prompt Suggestions ===== */
+#smart-prompts {
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+#smart-prompts button {
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  background-color: #333;
+  color: white;
+  border-radius: 6px;
+}
+
+body.light #smart-prompts button {
+  background-color: #ddd;
+  color: #222;
+}
+
+/* ===== Quote Box ===== */
+#quote {
+  margin-top: 30px;
+  font-size: 1.3rem;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word;
+}
+
+body.light #quote {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Form Containers ===== */
+#loginBox,
+#registerBox,
+.admin-token {
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+/* ===== Filter Bar ===== */
+#filter-bar {
+  margin: 30px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* ===== Table Styles ===== */
+#quote-table-container,
+#adminTableWrapper {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #ff9800;
+  color: white;
+}
+
+body.light th {
+  background-color: #ffa726;
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  box-shadow: 0 0 0 2px #ff9800;
+}
+
+/* ===== Chart Section ===== */
+#stats {
+  margin-top: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+canvas {
+  margin-top: 20px;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  textarea,
+  input,
+  select,
+  button {
+    width: 90% !important;
+    font-size: 1rem;
+  }
+
+  #filter-bar,
+  #smart-prompts {
+    flex-direction: column;
+    align-items: center;
+  }
+}

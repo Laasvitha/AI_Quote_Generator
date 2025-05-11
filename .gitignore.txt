@@ -1,0 +1,4 @@
+# ignore secrets
+server/.env
+node_modules/
+.env

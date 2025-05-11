@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RemAI Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>🧑‍💼 Admin Dashboard - RemAI</h1>
+
+  <!-- Admin Token Login -->
+  <div class="admin-token">
+    <input type="password" id="adminToken" placeholder="Enter admin token" />
+    <button onclick="loadAdminQuotes()">🔐 Authenticate & Load</button>
+  </div>
+
+  <!-- Admin Quotes Table -->
+  <div id="adminTableWrapper" style="display: none;">
+    <h2>📋 All Saved Quotes</h2>
+    <table id="adminQuoteTable">
+      <thead>
+        <tr>
+          <th>Quote</th>
+          <th>Category</th>
+          <th>Language</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Populated by admin.js -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RemAI - AI Quote Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>RemAI Quote Generator</h1>
+
+  <!-- 🔐 Profile / Logout -->
+  <div id="profileBox" style="display: none; margin-bottom: 1rem;">
+    <p><strong>Welcome:</strong> <span id="profileName"></span> (<span id="profileEmail"></span>)</p>
+    <button onclick="logoutUser()">Logout</button>
+  </div>
+
+  <!-- 🔐 Login -->
+  <div id="loginBox">
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPass" placeholder="Password" />
+    <button onclick="loginUser()">Login</button>
+    <p><a href="register.html">New? Register here</a></p>
+  </div>
+
+  <!-- 🧠 Prompt Input -->
+  <textarea id="prompt" placeholder="e.g., Write a motivational quote for programmers..."></textarea>
+
+  <!-- 🔘 Smart Prompts -->
+  <div id="smart-prompts">
+    <button onclick="useSmartPrompt('Give me a coding quote')">💻 Coding</button>
+    <button onclick="useSmartPrompt('Give me a Zen quote')">🧘 Zen</button>
+    <button onclick="useSmartPrompt('Give me a funny dev quote')">😂 Funny</button>
+  </div>
+
+  <!-- 🌐 Selectors -->
+  <div class="selectors">
+    <select id="category">
+      <option value="motivational">Motivational</option>
+      <option value="funny">Funny</option>
+      <option value="zen">Zen</option>
+    </select>
+    <select id="language">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="fr">French</option>
+    </select>
+  </div>
+
+  <!-- 🎯 Generate + Quote Display -->
+  <div class="buttons">
+    <button onclick="generateQuote()">⚡ Generate Quote</button>
+    <button onclick="speakQuote()">🔈 Speak</button>
+    <button onclick="copyQuote()">📋 Copy</button>
+    <button onclick="saveQuoteToDB()">💾 Save</button>
+    <button onclick="downloadQuoteAsImage()">🖼️ Export as Image</button>
+  </div>
+
+  <div id="quote">🧠 Your AI-generated quote will appear here...</div>
+
+  <!-- 🔎 Filter & Search -->
+  <div id="filter-bar">
+    <input type="text" id="searchInput" placeholder="Search quotes..." oninput="filterQuotes()" />
+    <select id="filterCategory" onchange="filterQuotes()">
+      <option value="">All Categories</option>
+      <option value="motivational">Motivational</option>
+      <option value="funny">Funny</option>
+      <option value="zen">Zen</option>
+    </select>
+    <select id="filterLanguage" onchange="filterQuotes()">
+      <option value="">All Languages</option>
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="fr">French</option>
+    </select>
+  </div>
+
+  <!-- 📋 Table -->
+  <div id="quote-table-container">
+    <table id="quote-table">
+      <thead>
+        <tr>
+          <th>Quote</th>
+          <th>Category</th>
+          <th>Language</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Quotes will render here -->
+      </tbody>
+    </table>
+    <button onclick="exportQuotesToCSV()">⬇️ Export to CSV</button>
+  </div>
+
+  <!-- 📊 Charts -->
+  <div id="stats">
+    <canvas id="categoryChart"></canvas>
+    <canvas id="languageChart"></canvas>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
