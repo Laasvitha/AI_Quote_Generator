@@ -1,3 +1,5 @@
+const BASE_URL = "https://ai-quote-backend.onrender.com";
+
 const promptInput = document.getElementById('prompt');
 const quoteBox = document.getElementById('quote');
 const categorySelect = document.getElementById('category');
@@ -6,7 +8,6 @@ const languageSelect = document.getElementById('language');
 let token = localStorage.getItem('token') || '';
 let allQuotes = [];
 
-// ✅ Generate Quote
 async function generateQuote() {
   const category = categorySelect.value;
   const prompt = promptInput.value.trim() || `Give me a ${category} quote for programmers.`;
@@ -15,7 +16,7 @@ async function generateQuote() {
   quoteBox.innerText = "⏳ Generating quote...";
 
   try {
-    const res = await fetch('http://localhost:5000/api/generate', {
+    const res = await fetch(`${BASE_URL}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt })
@@ -26,11 +27,11 @@ async function generateQuote() {
     quote = await translateText(quote, lang);
     quoteBox.innerText = `${quote}`;
   } catch (err) {
+    console.error("Quote generation failed:", err);
     quoteBox.innerText = "❌ Failed to generate quote.";
   }
 }
 
-// ✅ Translate Text (if needed)
 async function translateText(text, lang) {
   if (lang === "en") return text;
   try {
@@ -46,26 +47,22 @@ async function translateText(text, lang) {
   }
 }
 
-// ✅ Smart Prompt Buttons
 function useSmartPrompt(text) {
   promptInput.value = text;
 }
 
-// ✅ Copy to Clipboard
 function copyQuote() {
   const text = quoteBox.innerText;
   if (!text) return;
   navigator.clipboard.writeText(text).then(() => alert("✅ Copied!"));
 }
 
-// ✅ Speak Quote
 function speakQuote() {
   const utterance = new SpeechSynthesisUtterance(quoteBox.innerText);
   utterance.lang = 'en-US';
   speechSynthesis.speak(utterance);
 }
 
-// ✅ Save Quote to DB
 async function saveQuoteToDB() {
   if (!token) return alert("Please log in first.");
   const text = quoteBox.innerText;
@@ -73,7 +70,7 @@ async function saveQuoteToDB() {
   const language = languageSelect.value;
 
   try {
-    const res = await fetch("http://localhost:5000/api/save", {
+    const res = await fetch(`${BASE_URL}/api/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,17 +81,15 @@ async function saveQuoteToDB() {
 
     const data = await res.json();
     alert(data.message || "Saved!");
-    loadSavedQuotes();
   } catch (err) {
     alert("❌ Save failed.");
   }
 }
 
-// ✅ Load Quotes from DB
 async function loadSavedQuotes() {
-  if (!token) return;
+  if (!token) return alert("Login required.");
   try {
-    const res = await fetch("http://localhost:5000/api/my-quotes", {
+    const res = await fetch(`${BASE_URL}/api/my-quotes`, {
       headers: { "Authorization": `Bearer ${token}` }
     });
     allQuotes = await res.json();
@@ -105,7 +100,6 @@ async function loadSavedQuotes() {
   }
 }
 
-// ✅ Render Quotes in Table
 function renderQuotes(quotes) {
   const tbody = document.querySelector("#quote-table tbody");
   if (quotes.length === 0) {
@@ -125,7 +119,6 @@ function renderQuotes(quotes) {
   });
 }
 
-// ✅ Search & Filter
 function filterQuotes() {
   const keyword = document.getElementById('searchInput').value.toLowerCase();
   const category = document.getElementById('filterCategory').value;
@@ -141,7 +134,20 @@ function filterQuotes() {
   renderQuotes(filtered);
 }
 
-// ✅ Export Quotes to CSV
+function downloadQuoteAsImage() {
+  const element = document.getElementById("quote");
+  if (!element.innerText || element.innerText.includes("quote will appear")) {
+    return alert("⚠️ No quote to export!");
+  }
+
+  html2canvas(element).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "quote_card.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+
 function exportQuotesToCSV() {
   if (!allQuotes.length) return alert("⚠️ No quotes to export!");
 
@@ -159,26 +165,10 @@ function exportQuotesToCSV() {
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = "quotes.csv";
+  a.download = "remai_quotes.csv";
   a.click();
 }
 
-// ✅ Export Quote as Image
-function downloadQuoteAsImage() {
-  const element = document.getElementById("quote");
-  if (!element.innerText || element.innerText.includes("quote will appear")) {
-    return alert("⚠️ No quote to export!");
-  }
-
-  html2canvas(element).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "quote_card.png";
-    link.href = canvas.toDataURL();
-    link.click();
-  });
-}
-
-// ✅ Show Stats with Chart.js
 function showQuoteStats() {
   const categoryCounts = {};
   const languageCounts = {};
@@ -201,7 +191,9 @@ function renderPieChart(canvasId, label, dataObj) {
       datasets: [{
         label,
         data: Object.values(dataObj),
-        backgroundColor: ['#ff9800', '#4caf50', '#2196f3', '#9c27b0', '#f44336', '#00bcd4']
+        backgroundColor: [
+          '#ff9800', '#4caf50', '#2196f3', '#9c27b0', '#f44336', '#00bcd4'
+        ]
       }]
     },
     options: {
@@ -214,56 +206,29 @@ function renderPieChart(canvasId, label, dataObj) {
   });
 }
 
-// ✅ Login
-async function loginUser() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPass').value.trim();
-  if (!email || !password) return alert("Enter email & password");
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+}
 
-  const res = await fetch("http://localhost:5000/api/login", {
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light');
+  }
+});
+
+async function loginUser(email, password) {
+  const res = await fetch(`${BASE_URL}/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
   });
-
   const data = await res.json();
   if (data.token) {
     token = data.token;
     localStorage.setItem("token", token);
     alert("✅ Logged in");
-    window.location.reload();
   } else {
-    alert(data.error || "❌ Login failed.");
+    alert("❌ Login failed.");
   }
 }
-
-// ✅ Logout
-function logoutUser() {
-  localStorage.removeItem("token");
-  alert("🚪 Logged out.");
-  window.location.reload();
-}
-
-// ✅ Fetch Profile Info
-async function fetchProfile() {
-  if (!token) return;
-
-  try {
-    const res = await fetch("http://localhost:5000/api/my-profile", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-    if (res.ok) {
-      document.getElementById("profileBox").style.display = "block";
-      document.getElementById("profileName").innerText = data.name;
-      document.getElementById("profileEmail").innerText = data.email;
-      document.getElementById("loginBox").style.display = "none";
-      loadSavedQuotes();
-    }
-  } catch (err) {
-    console.warn("⚠️ Profile fetch failed:", err.message);
-  }
-}
-
-// ✅ Init
-window.addEventListener("DOMContentLoaded", fetchProfile);
