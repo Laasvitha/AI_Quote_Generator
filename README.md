@@ -1,9 +1,5 @@
 # 💬 AI Quote Generator ✨
 
-🚀 Live Demo: [aiquotegen.vercel.app](https://aiquotegen.vercel.app)  
-📺 Demo Video: [YouTube - AI Quote Generator Walkthrough](https://youtu.be/demo-link-here)
-
----
 
 ## 🧠 Project Description
 
